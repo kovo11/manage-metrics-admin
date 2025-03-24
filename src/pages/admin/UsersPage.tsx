@@ -1,6 +1,6 @@
 
 import { useEffect, useState } from "react";
-import { getUsers } from "@/services/adminService";
+import { getUsers } from "@/services/userService";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";

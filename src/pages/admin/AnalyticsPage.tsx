@@ -1,6 +1,6 @@
 
 import { useEffect, useState } from "react";
-import { getMetrics } from "@/services/adminService";
+import { getMetrics } from "@/services/analyticsService";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { 
   ResponsiveContainer, 

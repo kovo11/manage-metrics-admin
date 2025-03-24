@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { toast } from "@/lib/toast";
-import { forgotPassword } from "@/services/adminService";
+import { forgotPassword } from "@/services/authService";
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState("");
