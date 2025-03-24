@@ -1,7 +1,7 @@
 
 import { createContext, useState, useContext, useEffect, ReactNode } from "react";
 import { verifyAdmin } from "@/services/adminService";
-import { toast } from "@/components/ui/sonner";
+import { toast } from "@/lib/toast";
 
 interface Admin {
   id: string;
@@ -29,8 +29,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const checkAuthStatus = async () => {
       try {
         const { admin } = await verifyAdmin();
-        setAdmin(admin);
-        setIsAuthenticated(true);
+        if (admin && admin.id) {
+          setAdmin(admin as Admin);
+          setIsAuthenticated(true);
+        }
       } catch (error) {
         setAdmin(null);
         setIsAuthenticated(false);

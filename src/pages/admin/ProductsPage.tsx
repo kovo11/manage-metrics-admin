@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { getAllProducts, postProductToHomepage, updateProductOnHomepage, removeProductFromHomepage } from "@/services/adminService";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -27,12 +26,11 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
-import { toast } from "@/components/ui/sonner";
+import { toast } from "@/lib/toast";
 
 interface Product {
   id?: string;

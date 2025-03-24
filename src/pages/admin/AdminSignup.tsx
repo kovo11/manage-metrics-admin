@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
-import { toast } from "@/components/ui/sonner";
+import { toast } from "@/lib/toast";
 
 const AdminSignup = () => {
   const [email, setEmail] = useState("");
@@ -29,7 +29,7 @@ const AdminSignup = () => {
 
     try {
       const { admin } = await adminSignup({ email, password });
-      login(admin);
+      login(admin as any); // Type assertion as Admin
       navigate("/admin/dashboard");
     } catch (error) {
       if (error instanceof Error) {

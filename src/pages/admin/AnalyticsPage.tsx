@@ -1,23 +1,10 @@
-
 import { useEffect, useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { getMetrics } from "@/services/adminService";
-import { 
-  BarChart, 
-  Bar, 
-  LineChart, 
-  Line, 
-  PieChart, 
-  Pie, 
-  Cell,
-  XAxis, 
-  YAxis, 
-  CartesianGrid, 
-  Tooltip, 
-  Legend, 
-  ResponsiveContainer 
-} from 'recharts';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, BarChart, Bar } from "recharts";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Button } from "@/components/ui/button";
+import { toast } from "@/lib/toast";
 
 interface Metric {
   id: string;
@@ -26,47 +13,43 @@ interface Metric {
   date: string;
 }
 
-const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
-
 const AnalyticsPage = () => {
   const [metrics, setMetrics] = useState<Metric[]>([]);
+  const [salesData, setSalesData] = useState<Metric[]>([]);
+  const [usersData, setUsersData] = useState<Metric[]>([]);
+  const [ordersData, setOrdersData] = useState<Metric[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [salesData, setSalesData] = useState<any[]>([]);
-  const [usersData, setUsersData] = useState<any[]>([]);
-  const [ordersData, setOrdersData] = useState<any[]>([]);
+  const [activeTab, setActiveTab] = useState("overview");
 
   useEffect(() => {
     const fetchMetrics = async () => {
       try {
         const response = await getMetrics();
-        setMetrics(response.metrics);
+        const validMetrics = response.metrics.map((metric: any) => ({
+          ...metric,
+          id: metric.id || String(Math.random())
+        })) as Metric[];
         
-        // Process metrics
-        const salesMetrics = response.metrics.filter((metric: Metric) => metric.name === "sales");
-        const usersMetrics = response.metrics.filter((metric: Metric) => metric.name === "users");
-        const ordersMetrics = response.metrics.filter((metric: Metric) => metric.name === "orders");
+        setMetrics(validMetrics);
         
-        // Format data for charts
-        const formatData = (metrics: Metric[]) => metrics.map((metric) => ({
-          date: new Date(metric.date).toLocaleDateString('en-US', { month: 'short', year: 'numeric' }),
-          value: metric.value
-        }));
+        const sales = validMetrics.filter(metric => metric.name === 'sales');
+        const users = validMetrics.filter(metric => metric.name === 'users');
+        const orders = validMetrics.filter(metric => metric.name === 'orders');
         
-        setSalesData(formatData(salesMetrics));
-        setUsersData(formatData(usersMetrics));
-        setOrdersData(formatData(ordersMetrics));
-        
+        setSalesData(sales);
+        setUsersData(users);
+        setOrdersData(orders);
       } catch (error) {
-        console.error("Error fetching metrics:", error);
+        console.error('Error fetching metrics:', error);
+        toast.error('Failed to load analytics data');
       } finally {
         setIsLoading(false);
       }
     };
-    
+
     fetchMetrics();
   }, []);
 
-  // Prepare distribution data for pie chart
   const distributionData = [
     { name: "Sales", value: salesData.reduce((sum, item) => sum + item.value, 0) },
     { name: "Users", value: usersData.reduce((sum, item) => sum + item.value, 0) },

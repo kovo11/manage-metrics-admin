@@ -7,7 +7,15 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
-import { toast } from "@/components/ui/sonner";
+import { toast } from "@/lib/toast";
+
+interface AdminData {
+  id: string; // Make id required
+  name?: string;
+  email: string;
+  role?: string;
+  createdAt?: string;
+}
 
 const AdminLogin = () => {
   const [email, setEmail] = useState("");
@@ -22,7 +30,7 @@ const AdminLogin = () => {
 
     try {
       const { admin } = await adminLogin({ email, password });
-      login(admin);
+      login(admin as any); // Type assertion as Admin
       navigate("/admin/dashboard");
     } catch (error) {
       toast.error("Invalid credentials. Please try again.");

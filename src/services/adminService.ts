@@ -1,6 +1,3 @@
-
-import { toast } from "@/components/ui/sonner";
-
 // Mock service implementation for demo purposes
 // In a real application, this would use axios or fetch to call your backend APIs
 
@@ -10,7 +7,7 @@ interface Credentials {
 }
 
 interface AdminData {
-  id?: string;
+  id: string; // Make id required
   name?: string;
   email: string;
   role?: string;
@@ -47,7 +44,7 @@ interface OrderData {
 }
 
 interface MetricData {
-  id?: string;
+  id: string; // Make id required
   name: string;
   value: number;
   date: string;
@@ -293,12 +290,12 @@ export const apiWrapper = async (apiCall: () => Promise<any>, successMessage?: s
   try {
     const result = await apiCall();
     if (successMessage) {
-      toast.success(successMessage);
+      // We'll handle toast in the components instead
     }
     return result;
   } catch (error) {
     const message = error instanceof Error ? error.message : "An error occurred";
-    toast.error(message);
+    // We'll handle toast in the components instead
     throw error;
   }
 };
