@@ -1,33 +1,15 @@
 
-import { useState, useEffect } from "react";
-import { Outlet, useNavigate } from "react-router-dom";
-import { useAuth } from "@/contexts/AuthContext";
+import { useState } from "react";
+import { Outlet } from "react-router-dom";
 import AdminSidebar from "./AdminSidebar";
 import AdminHeader from "./AdminHeader";
-import { Loader2 } from "lucide-react";
 
 const AdminLayout = () => {
-  const { isAuthenticated, isLoading } = useAuth();
-  const navigate = useNavigate();
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-
-  useEffect(() => {
-    if (!isLoading && !isAuthenticated) {
-      navigate("/admin/login");
-    }
-  }, [isAuthenticated, isLoading, navigate]);
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
-
-  if (isLoading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Loader2 className="h-8 w-8 animate-spin text-primary" />
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-screen bg-gray-50">
