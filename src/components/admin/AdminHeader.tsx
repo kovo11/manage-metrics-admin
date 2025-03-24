@@ -12,6 +12,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface AdminHeaderProps {
   toggleSidebar: () => void;
@@ -21,6 +22,14 @@ interface AdminHeaderProps {
 const AdminHeader = ({ toggleSidebar, isSidebarOpen }: AdminHeaderProps) => {
   const { admin, logout } = useAuth();
   const [greeting, setGreeting] = useState("");
+  const isMobile = useIsMobile();
+
+  // Listen for custom toggle sidebar event from sidebar close button
+  useEffect(() => {
+    const handleToggleSidebar = () => toggleSidebar();
+    window.addEventListener('toggle-sidebar', handleToggleSidebar);
+    return () => window.removeEventListener('toggle-sidebar', handleToggleSidebar);
+  }, [toggleSidebar]);
 
   useEffect(() => {
     const hour = new Date().getHours();
@@ -30,39 +39,29 @@ const AdminHeader = ({ toggleSidebar, isSidebarOpen }: AdminHeaderProps) => {
   }, []);
 
   return (
-    <header className="sticky top-0 z-40 flex h-16 items-center gap-4 border-b border-gray-200 bg-white px-4 md:px-6 shadow-sm">
+    <header className="sticky top-0 z-40 flex h-16 items-center gap-4 border-b border-gray-200 bg-white px-4 shadow-sm">
       <Button
         variant="ghost"
         size="icon"
         onClick={toggleSidebar}
-        className="md:hidden"
+        aria-label="Toggle sidebar"
       >
-        {isSidebarOpen ? (
+        {isMobile && isSidebarOpen ? (
           <X className="h-5 w-5" />
         ) : (
           <Menu className="h-5 w-5" />
         )}
-        <span className="sr-only">Toggle sidebar</span>
-      </Button>
-      <Button
-        variant="ghost"
-        size="icon"
-        onClick={toggleSidebar}
-        className="hidden md:flex"
-      >
-        <Menu className="h-5 w-5" />
-        <span className="sr-only">Toggle sidebar</span>
       </Button>
       <div className="flex flex-1 items-center justify-between">
-        <div>
-          <h1 className="text-lg font-semibold md:text-xl">
+        <div className="truncate">
+          <h1 className="text-base font-semibold sm:text-lg md:text-xl truncate">
             {greeting}, {admin?.name || "Admin"}
           </h1>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-xs text-muted-foreground sm:text-sm truncate">
             Here's what's happening today
           </p>
         </div>
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2 sm:gap-4">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" size="icon" className="relative">
@@ -73,12 +72,21 @@ const AdminHeader = ({ toggleSidebar, isSidebarOpen }: AdminHeaderProps) => {
                 <span className="sr-only">Notifications</span>
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
+            <DropdownMenuContent align="end" className="w-72">
               <DropdownMenuLabel>Notifications</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>New order received</DropdownMenuItem>
-              <DropdownMenuItem>User John Doe registered</DropdownMenuItem>
-              <DropdownMenuItem>Product update needed</DropdownMenuItem>
+              <DropdownMenuItem className="flex flex-col items-start py-2">
+                <span className="font-medium">New order received</span>
+                <span className="text-xs text-muted-foreground">2 minutes ago</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem className="flex flex-col items-start py-2">
+                <span className="font-medium">User John Doe registered</span>
+                <span className="text-xs text-muted-foreground">1 hour ago</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem className="flex flex-col items-start py-2">
+                <span className="font-medium">Product update needed</span>
+                <span className="text-xs text-muted-foreground">3 hours ago</span>
+              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
           <DropdownMenu>

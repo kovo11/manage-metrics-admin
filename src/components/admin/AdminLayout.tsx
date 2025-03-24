@@ -1,11 +1,18 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Outlet } from "react-router-dom";
 import AdminSidebar from "./AdminSidebar";
 import AdminHeader from "./AdminHeader";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const AdminLayout = () => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const isMobile = useIsMobile();
+  const [isSidebarOpen, setIsSidebarOpen] = useState(!isMobile);
+
+  // Close sidebar by default on mobile screens
+  useEffect(() => {
+    setIsSidebarOpen(!isMobile);
+  }, [isMobile]);
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
@@ -17,7 +24,7 @@ const AdminLayout = () => {
         <AdminSidebar isOpen={isSidebarOpen} />
         <div className="flex flex-col flex-1 overflow-hidden">
           <AdminHeader toggleSidebar={toggleSidebar} isSidebarOpen={isSidebarOpen} />
-          <main className="flex-1 overflow-x-hidden overflow-y-auto bg-gray-50 p-4 md:p-6">
+          <main className="flex-1 overflow-x-hidden overflow-y-auto bg-gray-50 p-3 md:p-4 lg:p-6">
             <Outlet />
           </main>
         </div>
