@@ -1,10 +1,28 @@
+
 import { useEffect, useState } from "react";
 import { getMetrics } from "@/services/adminService";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, BarChart, Bar } from "recharts";
+import { 
+  ResponsiveContainer, 
+  LineChart, 
+  Line, 
+  XAxis, 
+  YAxis, 
+  CartesianGrid, 
+  Tooltip, 
+  Legend, 
+  BarChart, 
+  Bar,
+  PieChart,
+  Pie,
+  Cell
+} from "recharts";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/lib/toast";
+
+// Define COLORS array for the pie chart
+const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
 
 interface Metric {
   id: string;
