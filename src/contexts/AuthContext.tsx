@@ -1,7 +1,8 @@
 
 import { createContext, useState, useContext, useEffect, ReactNode } from "react";
-import { verifyAdmin } from "@/services/adminService";
+import { verifyAdmin, adminLogout } from "@/services/authService";
 import { toast } from "@/lib/toast";
+import { useNavigate } from "react-router-dom";
 
 interface Admin {
   id: string;
@@ -24,6 +25,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [admin, setAdmin] = useState<Admin | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const checkAuthStatus = async () => {
@@ -50,12 +52,24 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     toast.success("Successfully logged in");
   };
 
-  const logout = () => {
-    setAdmin(null);
-    setIsAuthenticated(false);
-    localStorage.removeItem("adminToken");
-    localStorage.removeItem("adminUser");
-    toast.success("Successfully logged out");
+  const logout = async () => {
+    try {
+      setIsLoading(true);
+      await adminLogout(); // Use the API service to logout
+      setAdmin(null);
+      setIsAuthenticated(false);
+      toast.success("Successfully logged out");
+      navigate('/admin/login');
+    } catch (error) {
+      console.error('Logout error:', error);
+      // Still clear local state even if API call fails
+      setAdmin(null);
+      setIsAuthenticated(false);
+      localStorage.removeItem("adminToken");
+      localStorage.removeItem("adminUser");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
