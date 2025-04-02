@@ -1,12 +1,21 @@
 
-// Re-export all admin-related services from specialized modules
-// This maintains backward compatibility with existing imports
+// Re-export all admin-related services for cleaner imports
 
+// Auth services
 export * from './authService';
-export * from './productService';
-export * from './userService';
-export * from './orderService';
+
+// Data services
+export * from './usersService';
+export * from './ordersService';
+export * from './ticketsService';
+export * from './messagesService';
+export * from './paymentsService';
+export * from './walletService';
+export * from './digitalProductsService';
+export * from './couponsService';
+export * from './homepageService';
 export * from './analyticsService';
-export * from './ticketService';
-export * from './messageService';
+
+// Utility exports
+export { apiClient } from './apiClient';
 export { apiWrapper } from './utils/apiUtils';
