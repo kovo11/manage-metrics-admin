@@ -22,7 +22,7 @@ const AdminLayout = () => {
     <div className="min-h-screen bg-gray-50">
       <div className="flex h-screen overflow-hidden">
         <AdminSidebar isOpen={isSidebarOpen} />
-        <div className="flex flex-col flex-1 overflow-hidden">
+        <div className={`flex flex-col flex-1 overflow-hidden transition-all duration-300 ${isSidebarOpen && !isMobile ? 'md:ml-64' : ''}`}>
           <AdminHeader toggleSidebar={toggleSidebar} isSidebarOpen={isSidebarOpen} />
           <main className="flex-1 overflow-x-hidden overflow-y-auto bg-gray-50 p-3 md:p-4 lg:p-6">
             <Outlet />

@@ -14,7 +14,6 @@ import {
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { useEffect } from "react";
 
 interface SidebarItem {
   title: string;
@@ -72,12 +71,16 @@ const AdminSidebar = ({ isOpen }: AdminSidebarProps) => {
     <>
       {/* Overlay for mobile when sidebar is open */}
       {isMobile && isOpen && (
-        <div className="fixed inset-0 bg-black/50 z-40" aria-hidden="true" />
+        <div 
+          className="fixed inset-0 bg-black/50 z-40" 
+          aria-hidden="true"
+          onClick={() => window.dispatchEvent(new CustomEvent('toggle-sidebar'))}
+        />
       )}
       
       <aside
         className={cn(
-          "fixed inset-y-0 left-0 z-50 flex w-64 flex-col border-r border-gray-200 bg-white transition-all duration-300 ease-in-out",
+          "fixed inset-y-0 left-0 z-50 w-64 flex flex-col border-r border-gray-200 bg-white transition-all duration-300 ease-in-out",
           {
             "translate-x-0": isOpen,
             "-translate-x-full": !isOpen,
@@ -116,6 +119,7 @@ const AdminSidebar = ({ isOpen }: AdminSidebarProps) => {
                       "hover:bg-gray-50": location.pathname !== item.href,
                     }
                   )}
+                  onClick={isMobile ? () => window.dispatchEvent(new CustomEvent('toggle-sidebar')) : undefined}
                 >
                   <item.icon
                     className={cn("h-5 w-5", {
