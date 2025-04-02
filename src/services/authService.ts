@@ -1,14 +1,14 @@
-
 import { Credentials, AdminData } from "../types/admin";
 import { apiClient } from "./apiClient";
+import env from "@/config/env";
 
 // Admin Authentication
 export const adminSignup = async (credentials: Credentials) => {
   const response = await apiClient.post('/api/admin-signup', credentials);
   
   if (response.data.token) {
-    localStorage.setItem("adminToken", response.data.token);
-    localStorage.setItem("adminUser", JSON.stringify(response.data.admin));
+    localStorage.setItem(env.ADMIN_TOKEN_NAME, response.data.token);
+    localStorage.setItem(env.ADMIN_USER_NAME, JSON.stringify(response.data.admin));
   }
   
   return response.data;
@@ -18,8 +18,8 @@ export const adminLogin = async (credentials: Credentials) => {
   const response = await apiClient.post('/api/admin-login', credentials);
   
   if (response.data.token) {
-    localStorage.setItem("adminToken", response.data.token);
-    localStorage.setItem("adminUser", JSON.stringify(response.data.admin));
+    localStorage.setItem(env.ADMIN_TOKEN_NAME, response.data.token);
+    localStorage.setItem(env.ADMIN_USER_NAME, JSON.stringify(response.data.admin));
   }
   
   return response.data;
@@ -27,8 +27,8 @@ export const adminLogin = async (credentials: Credentials) => {
 
 export const adminLogout = async () => {
   const response = await apiClient.post('/api/admin-logout');
-  localStorage.removeItem("adminToken");
-  localStorage.removeItem("adminUser");
+  localStorage.removeItem(env.ADMIN_TOKEN_NAME);
+  localStorage.removeItem(env.ADMIN_USER_NAME);
   return response.data;
 };
 
@@ -37,8 +37,8 @@ export const verifyAdmin = async () => {
     const response = await apiClient.get('/api/verifyAdmin');
     return { admin: response.data.admin, isAuthenticated: true };
   } catch (error) {
-    localStorage.removeItem("adminToken");
-    localStorage.removeItem("adminUser");
+    localStorage.removeItem(env.ADMIN_TOKEN_NAME);
+    localStorage.removeItem(env.ADMIN_USER_NAME);
     throw error;
   }
 };

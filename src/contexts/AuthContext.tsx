@@ -3,6 +3,7 @@ import { createContext, useState, useContext, useEffect, ReactNode } from "react
 import { verifyAdmin, adminLogout } from "@/services/authService";
 import { toast } from "@/lib/toast";
 import { useNavigate } from "react-router-dom";
+import env from "@/config/env";
 
 interface Admin {
   id: string;
@@ -65,8 +66,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       // Still clear local state even if API call fails
       setAdmin(null);
       setIsAuthenticated(false);
-      localStorage.removeItem("adminToken");
-      localStorage.removeItem("adminUser");
+      localStorage.removeItem(env.ADMIN_TOKEN_NAME);
+      localStorage.removeItem(env.ADMIN_USER_NAME);
     } finally {
       setIsLoading(false);
     }

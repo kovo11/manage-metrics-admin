@@ -1,9 +1,10 @@
 
 import axios from "axios";
 import { toast } from "@/lib/toast";
+import env from "@/config/env";
 
 const apiClient = axios.create({
-  baseURL: "/", // Adjust if your API is hosted elsewhere
+  baseURL: env.API_URL,
   headers: {
     "Content-Type": "application/json",
   },
@@ -13,7 +14,7 @@ const apiClient = axios.create({
 apiClient.interceptors.request.use(
   (config) => {
     // Add token to the request if it exists
-    const token = localStorage.getItem("adminToken");
+    const token = localStorage.getItem(env.ADMIN_TOKEN_NAME);
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -33,8 +34,8 @@ apiClient.interceptors.response.use(
     // Handle authentication errors
     if (response && response.status === 401) {
       // Clear token and user data
-      localStorage.removeItem("adminToken");
-      localStorage.removeItem("adminUser");
+      localStorage.removeItem(env.ADMIN_TOKEN_NAME);
+      localStorage.removeItem(env.ADMIN_USER_NAME);
       
       // Redirect to login if not already there
       if (!window.location.pathname.includes("/admin/login")) {
@@ -43,7 +44,7 @@ apiClient.interceptors.response.use(
     }
     
     // Format error message for toast
-    const errorMessage = response?.data?.message || error.message || "An error occurred";
+    const errorMessage = response?.data?.message || error.message || env.DEFAULT_ERROR_MESSAGE;
     toast.error(errorMessage);
     
     return Promise.reject(error);
