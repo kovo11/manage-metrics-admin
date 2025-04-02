@@ -14,6 +14,8 @@ import NotFound from "./pages/NotFound";
 import AdminLogin from "./pages/admin/AdminLogin";
 import AdminSignup from "./pages/admin/AdminSignup";
 import ForgotPassword from "./pages/admin/ForgotPassword";
+import ResetPassword from "./pages/admin/ResetPassword";
+import ChangePassword from "./pages/admin/ChangePassword";
 
 // Admin Dashboard pages
 import AdminLayout from "./components/admin/AdminLayout";
@@ -21,8 +23,24 @@ import Dashboard from "./pages/admin/Dashboard";
 import UsersPage from "./pages/admin/UsersPage";
 import ProductsPage from "./pages/admin/ProductsPage";
 import AnalyticsPage from "./pages/admin/AnalyticsPage";
+import OrdersPage from "./pages/admin/OrdersPage";
+import PaymentsPage from "./pages/admin/PaymentsPage";
+import CouponsPage from "./pages/admin/CouponsPage";
+import TicketsPage from "./pages/admin/TicketsPage";
+import TicketDetail from "./pages/admin/TicketDetail";
+import WalletPage from "./pages/admin/WalletPage";
+import ProfilePage from "./pages/admin/ProfilePage";
+import DigitalProductsPage from "./pages/admin/DigitalProductsPage";
+import HomepageManagementPage from "./pages/admin/HomepageManagementPage";
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: 1,
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
@@ -39,6 +57,8 @@ const App = () => (
             <Route path="/admin/login" element={<AdminLogin />} />
             <Route path="/admin/signup" element={<AdminSignup />} />
             <Route path="/admin/forgot-password" element={<ForgotPassword />} />
+            <Route path="/admin/reset-password" element={<ResetPassword />} />
+            <Route path="/admin/change-password" element={<ChangePassword />} />
             
             {/* Redirect /admin to login page */}
             <Route path="/admin" element={<Navigate to="/admin/login" replace />} />
@@ -48,9 +68,16 @@ const App = () => (
               <Route index element={<Dashboard />} />
               <Route path="users" element={<UsersPage />} />
               <Route path="products" element={<ProductsPage />} />
-              <Route path="orders" element={<Dashboard />} />
+              <Route path="digital-products" element={<DigitalProductsPage />} />
+              <Route path="homepage-management" element={<HomepageManagementPage />} />
+              <Route path="orders" element={<OrdersPage />} />
+              <Route path="payments" element={<PaymentsPage />} />
+              <Route path="coupons" element={<CouponsPage />} />
+              <Route path="tickets" element={<TicketsPage />} />
+              <Route path="tickets/:ticketId" element={<TicketDetail />} />
+              <Route path="wallet" element={<WalletPage />} />
               <Route path="analytics" element={<AnalyticsPage />} />
-              <Route path="settings" element={<Dashboard />} />
+              <Route path="profile" element={<ProfilePage />} />
             </Route>
             
             {/* Catch-all route */}
