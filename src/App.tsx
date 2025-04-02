@@ -40,10 +40,12 @@ const App = () => (
             <Route path="/admin/signup" element={<AdminSignup />} />
             <Route path="/admin/forgot-password" element={<ForgotPassword />} />
             
+            {/* Redirect /admin to login page */}
+            <Route path="/admin" element={<Navigate to="/admin/login" replace />} />
+            
             {/* Protected Admin Routes */}
-            <Route path="/admin" element={<AdminLayout />}>
-              <Route index element={<Navigate to="/admin/dashboard" replace />} />
-              <Route path="dashboard" element={<Dashboard />} />
+            <Route path="/admin/dashboard/*" element={<AdminLayout />}>
+              <Route index element={<Dashboard />} />
               <Route path="users" element={<UsersPage />} />
               <Route path="products" element={<ProductsPage />} />
               <Route path="orders" element={<Dashboard />} />
