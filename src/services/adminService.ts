@@ -4,9 +4,7 @@
 
 export * from './authService';
 export * from './productService';
-export * from './userService';
-export * from './orderService';
-export * from './analyticsService';
+export * from './digitalProductsService';
 export * from './ticketService';
 export * from './messageService';
 export { apiWrapper } from './utils/apiUtils';
