@@ -1,6 +1,12 @@
 
 import { useEffect, useState } from "react";
-import { getAllProducts, postProductToHomepage, updateProductOnHomepage, removeProductFromHomepage } from "@/services/productService";
+import { 
+  getAllProducts, 
+  getHomepageFeaturedProducts, 
+  postToHomepage, 
+  updateOnHomepage, 
+  removeFromHomepage 
+} from "@/services/adminService";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -113,7 +119,7 @@ const ProductsPage = () => {
 
     try {
       if (isEditing) {
-        const response = await updateProductOnHomepage(currentProduct.id!, currentProduct);
+        const response = await updateOnHomepage(currentProduct.id!, currentProduct);
         
         setProducts(products.map(product => 
           product.id === currentProduct.id ? response.product : product
@@ -121,7 +127,7 @@ const ProductsPage = () => {
         
         toast.success("Product updated successfully");
       } else {
-        const response = await postProductToHomepage(currentProduct);
+        const response = await postToHomepage(currentProduct);
         
         setProducts([...products, response.product]);
         
@@ -144,7 +150,7 @@ const ProductsPage = () => {
       
       const updated = { ...product, featured: !featured };
       
-      await updateProductOnHomepage(id, updated);
+      await updateOnHomepage(id, updated);
       
       setProducts(products.map(product => 
         product.id === id ? { ...product, featured: !featured } : product
@@ -158,7 +164,7 @@ const ProductsPage = () => {
 
   const handleDelete = async (id: string) => {
     try {
-      await removeProductFromHomepage(id);
+      await removeFromHomepage(id);
       
       setProducts(products.filter(product => product.id !== id));
       

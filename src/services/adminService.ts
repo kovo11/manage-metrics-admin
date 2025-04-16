@@ -31,6 +31,9 @@ export * from './analyticsService';
 export {
   getAllProducts,
   getFeaturedProducts,
+  postProductToHomepage,
+  updateProductOnHomepage,
+  removeProductFromHomepage
 } from './productService';
 
 // Homepage services are renamed to avoid conflicts

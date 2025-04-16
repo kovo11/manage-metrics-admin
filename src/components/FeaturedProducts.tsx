@@ -1,9 +1,7 @@
+
 import React from "react";
 import { useQuery } from "@tanstack/react-query";
-import {
-  fetchFeaturedProducts,
-  Product,
-} from "@/services/digitalProductsService";
+import { getHomepageFeaturedProducts } from "@/services/adminService";
 import { Link } from "react-router-dom";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
@@ -16,6 +14,15 @@ import {
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { ExternalLink, ShoppingCart } from "lucide-react";
 
+interface Product {
+  id: string;
+  name: string;
+  description: string;
+  price: string | number;
+  imageUrl?: string;
+  featured?: boolean;
+}
+
 const FeaturedProducts = () => {
   const {
     data: products,
@@ -23,7 +30,7 @@ const FeaturedProducts = () => {
     error,
   } = useQuery({
     queryKey: ["featuredProducts"],
-    queryFn: fetchFeaturedProducts,
+    queryFn: getHomepageFeaturedProducts,
   });
 
   if (isLoading) {
