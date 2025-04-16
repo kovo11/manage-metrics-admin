@@ -1,3 +1,4 @@
+
 import {
   createContext,
   useState,
@@ -6,7 +7,6 @@ import {
   ReactNode,
 } from "react";
 import { verifyAdmin } from "@/services/authService";
-// import { verifyAdmin } from "@/services/adminService";
 import { toast } from "@/lib/toast";
 
 interface Admin {
@@ -36,15 +36,21 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     const checkAuthStatus = async () => {
       try {
-        const admin = await verifyAdmin();
-        console.log(admin);
-        if (admin && admin.admin_id) {
-          setAdmin(admin as Admin);
+        const adminData = await verifyAdmin();
+        console.log("Admin data:", adminData);
+        if (adminData && adminData.admin_id) {
+          setAdmin(adminData as Admin);
           setIsAuthenticated(true);
+        } else {
+          // If no valid admin data, make sure to set admin to null
+          setAdmin(null);
+          setIsAuthenticated(false);
         }
       } catch (error) {
+        console.error("Auth verification error:", error);
         setAdmin(null);
-        setIsAuthenticated(true);
+        setIsAuthenticated(false);
+        // Changed from true to false - this was a bug
       } finally {
         setIsLoading(false);
       }
