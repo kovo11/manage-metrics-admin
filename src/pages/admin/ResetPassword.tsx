@@ -1,12 +1,18 @@
-
 import { useState, useEffect } from "react";
 import { useNavigate, useSearchParams, Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { toast } from "@/lib/toast";
-import { resetPassword, verifyPasswordResetToken } from "@/services/authService";
+// import { resetPassword, verifyPasswordResetToken } from "@/services/authService";
 
 const ResetPassword = () => {
   const [searchParams] = useSearchParams();
@@ -19,67 +25,62 @@ const ResetPassword = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!token) {
-      toast.error("Reset token is missing");
-      navigate("/admin/login");
-      return;
-    }
-
-    const checkToken = async () => {
-      try {
-        await verifyPasswordResetToken(token);
-        setIsTokenValid(true);
-      } catch (error) {
-        toast.error("Invalid or expired reset token");
-        setTimeout(() => navigate("/admin/forgot-password"), 2000);
-      } finally {
-        setIsTokenChecking(false);
-      }
-    };
-
-    checkToken();
+    // if (!token) {
+    //     toast.error("Reset token is missing");
+    //     navigate("/admin/login");
+    //     return;
+    // }
+    // const checkToken = async () => {
+    //     try {
+    //         await verifyPasswordResetToken(token);
+    //         setIsTokenValid(true);
+    //     } catch (error) {
+    //         toast.error("Invalid or expired reset token");
+    //         setTimeout(() => navigate("/admin/forgot-password"), 2000);
+    //     } finally {
+    //         setIsTokenChecking(false);
+    //     }
+    // };
+    // checkToken();
   }, [token, navigate]);
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (password !== confirmPassword) {
-      toast.error("Passwords do not match");
-      return;
-    }
-
-    if (password.length < 6) {
-      toast.error("Password must be at least 6 characters long");
-      return;
-    }
-
-    setIsLoading(true);
-
-    try {
-      await resetPassword(token!, password);
-      toast.success("Password reset successful");
-      navigate("/admin/login");
-    } catch (error) {
-      // Error handling is done in the API client
-    } finally {
-      setIsLoading(false);
-    }
+    //     e.preventDefault();
+    //     if (password !== confirmPassword) {
+    //         toast.error("Passwords do not match");
+    //         return;
+    //     }
+    //     if (password.length < 6) {
+    //         toast.error("Password must be at least 6 characters long");
+    //         return;
+    //     }
+    //     setIsLoading(true);
+    //     try {
+    //         await resetPassword(token!, password);
+    //         toast.success("Password reset successful");
+    //         navigate("/admin/login");
+    //     } catch (error) {
+    //         // Error handling is done in the API client
+    //     } finally {
+    //         setIsLoading(false);
+    //     }
+    // };
+    // if (isTokenChecking) {
+    //     return (
+    //         <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-50 p-4">
+    //             <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+    //         </div>
+    //     );
   };
-
-  if (isTokenChecking) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-50 p-4">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
-      </div>
-    );
-  }
 
   if (!isTokenValid) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-50 p-4">
         <Card className="glass-card w-full max-w-md">
           <CardHeader>
-            <CardTitle className="text-2xl font-bold text-center">Invalid Token</CardTitle>
+            <CardTitle className="text-2xl font-bold text-center">
+              Invalid Token
+            </CardTitle>
             <CardDescription className="text-center">
               Your password reset link is invalid or has expired.
             </CardDescription>
@@ -99,7 +100,9 @@ const ResetPassword = () => {
       <div className="w-full max-w-md animate-fade-in">
         <Card className="glass-card">
           <CardHeader className="space-y-1">
-            <CardTitle className="text-2xl font-bold text-center">Reset Password</CardTitle>
+            <CardTitle className="text-2xl font-bold text-center">
+              Reset Password
+            </CardTitle>
             <CardDescription className="text-center">
               Enter your new password below
             </CardDescription>

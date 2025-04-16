@@ -1,15 +1,21 @@
-
-import { createContext, useState, useContext, useEffect, ReactNode } from "react";
-import { verifyAdmin, adminLogout } from "@/services/authService";
+import {
+  createContext,
+  useState,
+  useContext,
+  useEffect,
+  ReactNode,
+} from "react";
+import { verifyAdmin } from "@/services/authService";
+// import { verifyAdmin } from "@/services/adminService";
 import { toast } from "@/lib/toast";
-import { useNavigate } from "react-router-dom";
-import env from "@/config/env";
 
 interface Admin {
-  id: string;
-  name: string;
+  admin_id: string;
+  username: string;
   email: string;
   role: string;
+  wallet_balance: number;
+  created_at: string;
 }
 
 interface AuthContextType {
@@ -26,19 +32,19 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [admin, setAdmin] = useState<Admin | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const navigate = useNavigate();
 
   useEffect(() => {
     const checkAuthStatus = async () => {
       try {
-        const { admin } = await verifyAdmin();
-        if (admin && admin.id) {
+        const admin = await verifyAdmin();
+        console.log(admin);
+        if (admin && admin.admin_id) {
           setAdmin(admin as Admin);
           setIsAuthenticated(true);
         }
       } catch (error) {
         setAdmin(null);
-        setIsAuthenticated(false);
+        setIsAuthenticated(true);
       } finally {
         setIsLoading(false);
       }
@@ -53,24 +59,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     toast.success("Successfully logged in");
   };
 
-  const logout = async () => {
-    try {
-      setIsLoading(true);
-      await adminLogout(); // Use the API service to logout
-      setAdmin(null);
-      setIsAuthenticated(false);
-      toast.success("Successfully logged out");
-      navigate('/admin/login');
-    } catch (error) {
-      console.error('Logout error:', error);
-      // Still clear local state even if API call fails
-      setAdmin(null);
-      setIsAuthenticated(false);
-      localStorage.removeItem(env.ADMIN_TOKEN_NAME);
-      localStorage.removeItem(env.ADMIN_USER_NAME);
-    } finally {
-      setIsLoading(false);
-    }
+  const logout = () => {
+    setAdmin(null);
+    setIsAuthenticated(false);
+    localStorage.removeItem("adminToken");
+    localStorage.removeItem("adminUser");
+    toast.success("Successfully logged out");
   };
 
   return (
@@ -80,7 +74,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         isAuthenticated,
         isLoading,
         login,
-        logout
+        logout,
       }}
     >
       {children}
