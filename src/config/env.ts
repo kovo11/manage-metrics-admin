@@ -30,6 +30,23 @@ const env = {
     PROFILE: {
       GET: '/api/admin/profile',
       UPDATE: '/api/admin/profile'
+    },
+    
+    // User endpoints
+    USERS: {
+      GET_ALL: '/api/users',
+      GET_ONE: '/api/users',
+      UPDATE: '/api/users',
+      DELETE: '/api/users'
+    },
+    
+    // Product endpoints
+    PRODUCTS: {
+      GET_ALL: '/api/products',
+      GET_ONE: '/api/products',
+      CREATE: '/api/products',
+      UPDATE: '/api/products',
+      DELETE: '/api/products'
     }
   }
 };

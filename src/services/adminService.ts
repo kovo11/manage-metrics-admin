@@ -5,7 +5,8 @@
 export * from './authService';
 
 // Data services
-export * from './usersService';
+export * from './userService';
+export * from './productService';
 export * from './ordersService';
 export * from './ticketsService';
 export * from './messagesService';
