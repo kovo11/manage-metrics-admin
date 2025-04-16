@@ -16,6 +16,21 @@ export interface Product {
   created_at?: string;
 }
 
+// For compatibility with DigitalProductsPage component
+export interface DigitalProduct {
+  id?: string;
+  platform_name: string;
+  category: string;
+  price: number;
+  description: string;
+  stock_quantity?: number;
+  data_format: string;
+  important_notice: string;
+  files?: File[];
+  on_homepage?: string;
+  created_at?: string;
+}
+
 // Fetch featured products for homepage display
 export const fetchFeaturedProducts = async (): Promise<Record<string, Product[]>> => {
   // Simulate API call delay
