@@ -7,15 +7,25 @@ export * from './authService';
 // Data services
 export * from './usersService';
 export * from './ordersService';
-export * from './ticketsService';
-export * from './messagesService';
+export { 
+  // Explicitly re-export from ticketService to avoid conflicts with ticketsService
+  createTicket,
+  getTickets,
+  getTicketById,
+  updateTicket,
+  closeTicket,
+  assignTicket,
+  deleteTicket
+} from './ticketService';
+export { 
+  // Explicitly re-export from messageService to avoid conflicts with messagesService
+  getAllMessages
+} from './messageService';
 export * from './paymentsService';
 export * from './walletService';
 export * from './digitalProductsService';
 export * from './couponsService';
 export * from './analyticsService';
-export * from './ticketService';
-export * from './messageService';
 
 // Explicitly re-export product services to avoid naming conflicts
 export {
@@ -32,3 +42,6 @@ export {
 } from './homepageService';
 
 export { apiWrapper } from './utils/apiUtils';
+
+// Re-export user functions from userService
+export { getAllUsers, getUserById, updateUser, deleteUser } from './userService';
