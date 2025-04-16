@@ -13,8 +13,22 @@ export * from './paymentsService';
 export * from './walletService';
 export * from './digitalProductsService';
 export * from './couponsService';
-export * from './homepageService';
 export * from './analyticsService';
 export * from './ticketService';
 export * from './messageService';
+
+// Explicitly re-export product services to avoid naming conflicts
+export {
+  getAllProducts,
+  getFeaturedProducts,
+} from './productService';
+
+// Homepage services are renamed to avoid conflicts
+export {
+  getFeaturedProducts as getHomepageFeaturedProducts,
+  postProductToHomepage as postToHomepage,
+  updateProductOnHomepage as updateOnHomepage,
+  removeProductFromHomepage as removeFromHomepage
+} from './homepageService';
+
 export { apiWrapper } from './utils/apiUtils';
