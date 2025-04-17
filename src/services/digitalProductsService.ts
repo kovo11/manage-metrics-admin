@@ -8,12 +8,15 @@ export interface Product {
   imageUrl?: string;
   category: string;
   featured: boolean;
-  platform_name?: string;
+  platform_name: string; // Make this required
   data_format?: string;
   important_notice?: string;
   stock_quantity?: number;
   on_homepage?: string;
   created_at?: string;
+  date_created?: string; // Add for compatibility with DigitalProducts.tsx
+  homepage_position?: number; // Add for compatibility with DigitalProducts.tsx
+  updated_at?: string | null;
 }
 
 // For compatibility with DigitalProductsPage component
@@ -21,7 +24,7 @@ export interface DigitalProduct {
   id?: string;
   platform_name: string;
   category: string;
-  price: number;
+  price: number | string;
   description: string;
   stock_quantity?: number;
   data_format: string;

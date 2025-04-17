@@ -1,7 +1,8 @@
+
 import React, { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useSearchParams, Link } from "react-router-dom";
-import { getDigitalProducts, product } from "@/services/digitalProductsService";
+import { getDigitalProducts, Product } from "@/services/digitalProductsService";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -15,6 +16,7 @@ import {
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Search, Filter, ExternalLink, ShoppingCart } from "lucide-react";
 
+// Update this interface to match the Product from digitalProductsService.ts
 export interface Product {
   id: string;
   category: string;
@@ -23,9 +25,9 @@ export interface Product {
   description: string;
   homepage_position: number;
   important_notice: string;
-  on_homepage: boolean | string; // Can be "false" or a boolean
+  on_homepage: boolean | string;
   platform_name: string;
-  price: number;
+  price: number | string;
   stock_quantity: number;
   imageUrl: string;
   updated_at?: string | null;
