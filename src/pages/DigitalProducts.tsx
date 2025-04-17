@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useSearchParams, Link } from "react-router-dom";
-import { getDigitalProducts, Product } from "@/services/digitalProductsService";
+import { getDigitalProducts, Product as DigitalProductType } from "@/services/digitalProductsService";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -16,8 +16,8 @@ import {
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Search, Filter, ExternalLink, ShoppingCart } from "lucide-react";
 
-// Update this interface to match the Product from digitalProductsService.ts
-export interface Product {
+// Rename this interface to avoid conflict with the imported one
+export interface ProductDisplay {
   id: string;
   category: string;
   data_format: string;
@@ -58,7 +58,7 @@ const DigitalProducts = () => {
     // Apply the filter from the input field
   };
 
-  const filterProducts = (products: Product[] | undefined) => {
+  const filterProducts = (products: DigitalProductType[] | undefined) => {
     if (!products) return [];
 
     return products.filter((product) => {
@@ -71,22 +71,13 @@ const DigitalProducts = () => {
 
       const matchesCategory =
         activeCategory === "all" ||
-        (product as any).category === activeCategory;
+        product.category.toLowerCase() === activeCategory.toLowerCase();
 
       return matchesSearch && matchesCategory;
     });
   };
 
   const filteredProducts = filterProducts(products);
-
-  // const categories = [
-  //   { id: 'all', name: 'All' },
-  //   { id: 'templates', name: 'Templates' },
-  //   { id: 'ebooks', name: 'eBooks' },
-  //   { id: 'courses', name: 'Courses' },
-  //   { id: 'graphics', name: 'Graphics' },
-  //   { id: 'software', name: 'Software' },
-  // ];
 
   const categories = [
     { id: "all", name: "All" },

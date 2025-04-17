@@ -8,14 +8,14 @@ export interface Product {
   imageUrl?: string;
   category: string;
   featured: boolean;
-  platform_name: string; // Make this required
+  platform_name: string;
   data_format?: string;
   important_notice?: string;
   stock_quantity?: number;
   on_homepage?: string;
   created_at?: string;
-  date_created?: string; // Add for compatibility with DigitalProducts.tsx
-  homepage_position?: number; // Add for compatibility with DigitalProducts.tsx
+  date_created?: string;
+  homepage_position?: number;
   updated_at?: string | null;
 }
 
@@ -48,7 +48,8 @@ export const fetchFeaturedProducts = async (): Promise<Record<string, Product[]>
         price: "$99.99",
         imageUrl: "/placeholder.svg",
         category: "Instagram",
-        featured: true
+        featured: true,
+        platform_name: "Instagram Premium Account"
       }
     ],
     "Twitter": [
@@ -59,7 +60,8 @@ export const fetchFeaturedProducts = async (): Promise<Record<string, Product[]>
         price: "$149.99",
         imageUrl: "/placeholder.svg",
         category: "Twitter",
-        featured: true
+        featured: true,
+        platform_name: "Twitter Verified Account"
       }
     ],
     "Facebook": [
@@ -70,7 +72,8 @@ export const fetchFeaturedProducts = async (): Promise<Record<string, Product[]>
         price: "$129.99",
         imageUrl: "/placeholder.svg",
         category: "Facebook",
-        featured: true
+        featured: true,
+        platform_name: "Facebook Page"
       }
     ]
   };

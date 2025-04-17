@@ -47,7 +47,7 @@ const ForgotPassword = () => {
       toast({
         title: "Success",
         description: "Code verified. You can now reset your password.",
-        variant: "default", // Changed from 'success' to 'default'
+        variant: "default",
       });
       navigate("/login");
     } catch (error: any) {

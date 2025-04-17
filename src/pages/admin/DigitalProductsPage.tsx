@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 import {
   getDigitalProducts,
@@ -145,13 +146,28 @@ const DigitalProductsPage = () => {
     },
   });
 
-  const filteredProducts = data ? 
-    data.filter(
-      (product: Product) =>
-        product.platform_name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        product.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        product.description.toLowerCase().includes(searchQuery.toLowerCase())
-    ) : [];
+  // Convert Product[] to DigitalProduct[] for type compatibility
+  const filteredProducts = data 
+    ? data
+        .filter(
+          (product) =>
+            product.platform_name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            product.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            product.description.toLowerCase().includes(searchQuery.toLowerCase())
+        )
+        .map((product): DigitalProduct => ({
+          id: product.id,
+          platform_name: product.platform_name,
+          category: product.category,
+          price: product.price,
+          description: product.description,
+          data_format: product.data_format || "",
+          important_notice: product.important_notice || "",
+          stock_quantity: product.stock_quantity,
+          on_homepage: product.on_homepage,
+          created_at: product.created_at,
+        }))
+    : [];
 
   const handleOpenDialog = (product?: DigitalProduct) => {
     if (product) {
@@ -215,7 +231,7 @@ const DigitalProductsPage = () => {
         return;
       }
 
-      setSelectedFiles(filteredFiles as unknown as FileList);
+      setSelectedFiles(files);
 
       setCurrentProduct((prev) => ({
         ...prev,
@@ -236,8 +252,10 @@ const DigitalProductsPage = () => {
     formData.append("data_format", currentProduct.data_format || "");
     formData.append("important_notice", currentProduct.important_notice || "");
 
-    for (let i = 0; i < selectedFiles.length; i++) {
-      formData.append("files", selectedFiles[i]);
+    if (selectedFiles) {
+      for (let i = 0; i < selectedFiles.length; i++) {
+        formData.append("files", selectedFiles[i]);
+      }
     }
 
     createProductMutation.mutate(formData);
@@ -457,6 +475,7 @@ const DigitalProductsPage = () => {
                   value={currentProduct.important_notice}
                   onChange={handleInputChange}
                   placeholder="Any important information"
+                  required
                 />
               </div>
               <div className="space-y-2 md:col-span-2">
