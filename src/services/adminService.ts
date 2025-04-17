@@ -7,6 +7,7 @@ export * from './productService';
 export * from './digitalProductsService';
 export * from './ticketService';
 export * from './messageService';
+export * from './messagesService'; 
 export { apiWrapper } from './utils/apiUtils';
 export { getAllUsers } from './userService';
 export { getMetrics, getOrders } from './analyticsService';
