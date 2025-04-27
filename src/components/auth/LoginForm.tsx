@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -5,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { Eye, EyeOff, Mail, Lock } from "lucide-react";
 import { adminLogin } from "@/services/authService";
+import { useAuth } from "@/contexts/AuthContext";
 
 const LoginForm = () => {
   const [email, setEmail] = useState("");
@@ -13,6 +15,7 @@ const LoginForm = () => {
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -27,25 +30,24 @@ const LoginForm = () => {
     setIsLoading(true);
     try {
       const response = await adminLogin({ email, password });
-      const data = await response.json();
-      console.log(data);
-      // If the returned message is not "Please log in again.", it's a success
-      if (data.message) {
-        toast({
-          title: "Error",
-          description: data.message,
-          variant: "destructive",
-        });
-      } else {
+      
+      // If login is successful and no error message
+      if (!response.message) {
         toast({
           title: "Success",
           description: "Logged in successfully",
           variant: "default",
         });
-        // Redirect to the signed-in homepage after 2 seconds.
-        // setTimeout(() => {
-        //   navigate("/user-home"); // Adjust this route if your signed-in homepage is registered elsewhere.
-        // }, 3000);
+        
+        // Navigate to admin dashboard
+        navigate("/admin/dashboard");
+      } else {
+        // Handle login errors
+        toast({
+          title: "Error",
+          description: response.message,
+          variant: "destructive",
+        });
       }
     } catch (error: any) {
       toast({
