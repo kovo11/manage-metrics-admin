@@ -1,13 +1,19 @@
+
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Search, ChevronDown, Menu, Globe, Flag } from 'lucide-react';
+import { Search, ChevronDown, Menu, Globe, Flag, X } from 'lucide-react';
 import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetTrigger, SheetClose } from "@/components/ui/sheet";
 import SupportTicketButton from './SupportTicketButton';
 import WalletButton from './WalletButton';
 
 const UserHeader = () => {
   const [searchQuery, setSearchQuery] = useState('');
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
 
   return (
     <header className="w-full bg-white">
@@ -50,7 +56,7 @@ const UserHeader = () => {
               </Link>
               
               {/* Mobile menu button */}
-              <Sheet>
+              <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
                 <SheetTrigger asChild>
                   <Button variant="ghost" size="icon" className="md:hidden">
                     <Menu className="h-5 w-5" />
@@ -58,6 +64,15 @@ const UserHeader = () => {
                   </Button>
                 </SheetTrigger>
                 <SheetContent side="left" className="w-64 sm:w-80">
+                  <div className="flex justify-between items-center mb-4 pr-2">
+                    <h2 className="text-lg font-semibold">Menu</h2>
+                    <SheetClose asChild>
+                      <Button variant="ghost" size="icon">
+                        <X className="h-5 w-5" />
+                        <span className="sr-only">Close</span>
+                      </Button>
+                    </SheetClose>
+                  </div>
                   <div className="flex flex-col gap-4 py-4">
                     <Link to="/" className="text-sm font-medium text-gray-700 hover:text-blue-600 px-4 py-2">
                       Home

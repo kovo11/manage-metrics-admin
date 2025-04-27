@@ -1,3 +1,4 @@
+
 import { Link, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import {
@@ -15,8 +16,10 @@ import {
   FileText,
   User,
   LayoutDashboard,
+  X
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
+import { Button } from "@/components/ui/button";
 
 interface SidebarLinkProps {
   href: string;
@@ -50,6 +53,7 @@ interface AdminSidebarProps {
 
 const AdminSidebar = ({ isOpen }: AdminSidebarProps) => {
   const { logout } = useAuth();
+  const isMobileView = window.innerWidth < 1024;
 
   const handleLogout = async () => {
     await logout();
@@ -63,7 +67,7 @@ const AdminSidebar = ({ isOpen }: AdminSidebarProps) => {
       )}
     >
       <div className="flex flex-col h-full">
-        <div className="border-b border-border p-4">
+        <div className="border-b border-border p-4 flex justify-between items-center">
           <Link
             to="/admin/dashboard"
             className="flex items-center gap-2 font-bold text-xl"
@@ -71,6 +75,11 @@ const AdminSidebar = ({ isOpen }: AdminSidebarProps) => {
             <LayoutDashboard className="h-5 w-5 text-primary" />
             <span>Admin Portal</span>
           </Link>
+          {isMobileView && (
+            <Button variant="ghost" size="icon" className="lg:hidden">
+              <X className="h-4 w-4" />
+            </Button>
+          )}
         </div>
 
         <div className="flex-1 overflow-auto py-2 px-4">
@@ -85,7 +94,6 @@ const AdminSidebar = ({ isOpen }: AdminSidebarProps) => {
               icon={Users}
               label="Users Management"
             />
-            {/* <SidebarLink href="/admin/dashboard/products" icon={Package} label="Products" /> */}
             <SidebarLink
               href="/admin/dashboard/digital-products"
               icon={FileText}

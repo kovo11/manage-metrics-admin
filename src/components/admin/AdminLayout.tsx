@@ -1,9 +1,11 @@
+
 import { useState, useEffect } from "react";
 import { Outlet, Navigate, useLocation } from "react-router-dom";
 import AdminSidebar from "./AdminSidebar";
 import AdminHeader from "./AdminHeader";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useAuth } from "@/contexts/AuthContext";
+import { Sheet, SheetContent } from "@/components/ui/sheet";
 
 const AdminLayout = () => {
   const isMobile = useIsMobile();
@@ -37,7 +39,15 @@ const AdminLayout = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="flex h-screen overflow-hidden">
-        <AdminSidebar isOpen={isSidebarOpen} />
+        {isMobile ? (
+          <Sheet open={isSidebarOpen} onOpenChange={setIsSidebarOpen}>
+            <SheetContent side="left" className="p-0 w-64">
+              <AdminSidebar isOpen={true} />
+            </SheetContent>
+          </Sheet>
+        ) : (
+          <AdminSidebar isOpen={isSidebarOpen} />
+        )}
         <div
           className={`flex flex-col flex-1 overflow-hidden transition-all duration-300 ${
             isSidebarOpen && !isMobile ? "md:ml-64" : ""
