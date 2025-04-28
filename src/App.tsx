@@ -7,28 +7,28 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider } from "@/contexts/AuthContext";
 
 // Admin Auth pages
-import AdminLogin from "./pages/admin/AdminLogin";
-import AdminSignup from "./pages/admin/AdminSignup";
-import ForgotPassword from "./pages/admin/ForgotPassword";
-import ResetPassword from "./pages/admin/ResetPassword";
-import ChangePassword from "./pages/admin/ChangePassword";
+import AdminLogin from "./pages/AdminLogin";
+import AdminSignup from "./pages/AdminSignup";
+import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
+import ChangePassword from "./pages/ChangePassword";
 import NotFound from "./pages/NotFound";
 
 // Admin Dashboard pages
 import AdminLayout from "./components/admin/AdminLayout";
-import Dashboard from "./pages/admin/Dashboard";
-import UsersPage from "./pages/admin/UsersPage";
-import ProductsPage from "./pages/admin/ProductsPage";
-import AnalyticsPage from "./pages/admin/AnalyticsPage";
-import OrdersPage from "./pages/admin/OrdersPage";
-import PaymentsPage from "./pages/admin/PaymentsPage";
-import CouponsPage from "./pages/admin/CouponsPage";
-import TicketsPage from "./pages/admin/TicketsPage";
-import TicketDetail from "./pages/admin/TicketDetail";
-import WalletPage from "./pages/admin/WalletPage";
-import ProfilePage from "./pages/admin/ProfilePage";
-import DigitalProductsPage from "./pages/admin/DigitalProductsPage";
-import HomepageManagementPage from "./pages/admin/HomepageManagementPage";
+import Dashboard from "./pages/Dashboard";
+import UsersPage from "./pages/UsersPage";
+import ProductsPage from "./pages/ProductsPage";
+import AnalyticsPage from "./pages/AnalyticsPage";
+import OrdersPage from "./pages/OrdersPage";
+import PaymentsPage from "./pages/PaymentsPage";
+import CouponsPage from "./pages/CouponsPage";
+import TicketsPage from "./pages/TicketsPage";
+import TicketDetail from "./pages/TicketDetail";
+import WalletPage from "./pages/WalletPage";
+import ProfilePage from "./pages/ProfilePage";
+import DigitalProductsPage from "./pages/DigitalProductsPage";
+import HomepageManagementPage from "./pages/HomepageManagementPage";
 import HomePage from "./pages/HomePage";
 
 // Configure React Query with error handling
