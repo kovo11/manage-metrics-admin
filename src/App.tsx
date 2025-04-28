@@ -31,11 +31,13 @@ import DigitalProductsPage from "./pages/admin/DigitalProductsPage";
 import HomepageManagementPage from "./pages/admin/HomepageManagementPage";
 import HomePage from "./pages/HomePage";
 
+// Configure React Query with error handling
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       retry: 1,
       refetchOnWindowFocus: false,
+      staleTime: 5 * 60 * 1000, // 5 minutes
     },
   },
 });
@@ -48,7 +50,7 @@ const App = () => (
           <Toaster />
           <Sonner />
           <Routes>
-            {/* Set Admin Signup as the default route */}
+            {/* Homepage route */}
             <Route path="/" element={<HomePage />} />
             
             {/* Admin Auth Routes */}
@@ -58,25 +60,19 @@ const App = () => (
             <Route path="/admin/reset-password" element={<ResetPassword />} />
             <Route path="/admin/change-password" element={<ChangePassword />} />
 
-            {/* Redirect /admin to login page */}
+            {/* Redirect /admin to admin dashboard or login */}
             <Route
               path="/admin"
-              element={<Navigate to="/admin/login" replace />}
+              element={<Navigate to="/admin/dashboard" replace />}
             />
 
-            {/* Protected Admin Routes */}
+            {/* Protected Admin Routes wrapped in AdminLayout */}
             <Route path="/admin/dashboard" element={<AdminLayout />}>
               <Route index element={<Dashboard />} />
               <Route path="users" element={<UsersPage />} />
               <Route path="products" element={<ProductsPage />} />
-              <Route
-                path="digital-products"
-                element={<DigitalProductsPage />}
-              />
-              <Route
-                path="homepage-management"
-                element={<HomepageManagementPage />}
-              />
+              <Route path="digital-products" element={<DigitalProductsPage />} />
+              <Route path="homepage-management" element={<HomepageManagementPage />} />
               <Route path="orders" element={<OrdersPage />} />
               <Route path="payments" element={<PaymentsPage />} />
               <Route path="coupons" element={<CouponsPage />} />

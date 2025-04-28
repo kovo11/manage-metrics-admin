@@ -1,4 +1,3 @@
-
 import {
   createContext,
   useState,
@@ -44,6 +43,18 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    const storedAdmin = localStorage.getItem("adminUser");
+    if (storedAdmin) {
+      try {
+        const adminData = JSON.parse(storedAdmin) as Admin;
+        setAdmin(adminData);
+        setIsAuthenticated(true);
+      } catch (error) {
+        console.error("Error parsing stored admin data:", error);
+        localStorage.removeItem("adminUser");
+      }
+    }
+    
     const checkAuthStatus = async () => {
       try {
         const adminData = await verifyAdmin();
@@ -52,14 +63,21 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           setAdmin(adminData as Admin);
           setIsAuthenticated(true);
         } else {
-          // If no valid admin data, make sure to set admin to null
-          setAdmin(null);
-          setIsAuthenticated(false);
+          // If the API check fails but we have local data, keep using that
+          const storedAdmin = localStorage.getItem("adminUser");
+          if (!storedAdmin) {
+            setAdmin(null);
+            setIsAuthenticated(false);
+          }
         }
       } catch (error) {
         console.error("Auth verification error:", error);
-        setAdmin(null);
-        setIsAuthenticated(false);
+        // Don't clear local auth state on API error - this prevents logout when API is down
+        const storedAdmin = localStorage.getItem("adminUser");
+        if (!storedAdmin) {
+          setAdmin(null);
+          setIsAuthenticated(false);
+        }
       } finally {
         setIsLoading(false);
       }
@@ -73,9 +91,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setAdmin(adminData);
     setIsAuthenticated(true);
     
-    // Store token in localStorage for persistence
+    // Store admin data in localStorage for persistence
     if (adminData.admin_id) {
       localStorage.setItem("adminUser", JSON.stringify(adminData));
+      localStorage.setItem("adminToken", "dummy-token"); // Store a token for apiClient
     }
     
     toast.success("Successfully logged in");

@@ -19,10 +19,14 @@ const AdminLayout = () => {
     setIsSidebarOpen(!isMobile);
   }, [isMobile]);
 
-  // Check if we're on the dashboard path
+  // Debug log for authentication state
   useEffect(() => {
-    console.log("Current location:", location.pathname);
-    console.log("Authentication state:", isAuthenticated);
+    console.log("AdminLayout - Current location:", location.pathname);
+    console.log("AdminLayout - Authentication state:", isAuthenticated);
+    
+    // Check for locally stored admin user as a fallback
+    const storedAdmin = localStorage.getItem("adminUser");
+    console.log("AdminLayout - Stored admin:", storedAdmin ? "exists" : "not found");
   }, [location, isAuthenticated]);
 
   const toggleSidebar = () => {
@@ -46,11 +50,11 @@ const AdminLayout = () => {
 
   // If not authenticated, redirect to login
   if (!isAuthenticated) {
-    console.log("Not authenticated, redirecting to login...");
+    console.log("AdminLayout - Not authenticated, redirecting to login...");
     return <Navigate to="/admin/login" state={{ from: location }} replace />;
   }
 
-  console.log("Rendering AdminLayout for authenticated user");
+  console.log("AdminLayout - Rendering admin layout for authenticated user");
 
   return (
     <div className="min-h-screen bg-gray-50">
