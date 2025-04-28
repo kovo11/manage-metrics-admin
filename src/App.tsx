@@ -29,6 +29,7 @@ import WalletPage from "./pages/admin/WalletPage";
 import ProfilePage from "./pages/admin/ProfilePage";
 import DigitalProductsPage from "./pages/admin/DigitalProductsPage";
 import HomepageManagementPage from "./pages/admin/HomepageManagementPage";
+import HomePage from "./pages/HomePage";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -48,7 +49,7 @@ const App = () => (
           <Sonner />
           <Routes>
             {/* Set Admin Signup as the default route */}
-            <Route path="/" element={<Navigate to="/admin/signup" replace />} />
+            <Route path="/" element={<HomePage />} />
             
             {/* Admin Auth Routes */}
             <Route path="/admin/login" element={<AdminLogin />} />
@@ -64,7 +65,7 @@ const App = () => (
             />
 
             {/* Protected Admin Routes */}
-            <Route path="/admin/dashboard/*" element={<AdminLayout />}>
+            <Route path="/admin/dashboard" element={<AdminLayout />}>
               <Route index element={<Dashboard />} />
               <Route path="users" element={<UsersPage />} />
               <Route path="products" element={<ProductsPage />} />

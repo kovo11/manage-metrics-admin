@@ -15,14 +15,6 @@ import {
 import { Label } from "@/components/ui/label";
 import { toast } from "@/lib/toast";
 
-interface AdminData {
-  id: string;
-  name?: string;
-  email: string;
-  role?: string;
-  createdAt?: string;
-}
-
 const AdminLogin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -30,46 +22,27 @@ const AdminLogin = () => {
   const navigate = useNavigate();
   const { login } = useAuth();
 
-  // useEffect(() => {
-  //   const checkAuthStatus = async () => {
-  //     try {
-  //       const admin = await verifyAdmin();
-  //       console.log(admin);
-  //       if (admin && admin.admin_id) {
-  //         // setAdmin(admin as Admin);
-  //         // setIsAuthenticated(true);
-  //       }
-  //     } catch (error) {
-  //       // setAdmin(null);
-  //       // setIsAuthenticated(true);
-  //     } finally {
-  //       setIsLoading(false);
-  //     }
-  //   };
-
-  //   checkAuthStatus();
-  // }, []);
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email || !password) {
-      toast.error("input fields cannot be empty");
+      toast.error("Input fields cannot be empty");
       return;
     }
     setIsLoading(true);
     try {
       const response = await adminLogin({ email, password });
-      const data = await response;
-      console.log(data);
-      // If the returned message is not "Please log in again.", it's a success
-      if (data.message) {
-        toast.error(data.message);
+      
+      // If login is successful
+      if (!response.message) {
+        // Set the authentication state
+        login(response);
+        
+        toast.success("Login successful");
+        
+        // Redirect to admin dashboard
+        navigate("/admin/dashboard");
       } else {
-        toast.error(data.status);
-        // Redirect to the signed-in homepage after 2 seconds.
-        setTimeout(() => {
-          navigate("/"); // Adjust this route if your signed-in homepage is registered elsewhere.
-        }, 2000);
+        toast.error(response.message || "Login failed");
       }
     } catch (error: any) {
       toast.error("Login failed. Please try again.");
@@ -78,6 +51,7 @@ const AdminLogin = () => {
       setIsLoading(false);
     }
   };
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-50 p-4">
       <div className="w-full max-w-md animate-fade-in">

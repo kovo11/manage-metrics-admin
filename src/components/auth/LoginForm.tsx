@@ -43,7 +43,7 @@ const LoginForm = () => {
           variant: "default",
         });
         
-        // Navigate to admin dashboard
+        // Navigate to admin dashboard - fix: corrected the navigation path
         navigate("/admin/dashboard");
       } else {
         // Handle login errors
