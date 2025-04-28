@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from "react";
-import { Outlet, Navigate, useLocation } from "react-router-dom";
+import { Outlet, Navigate, useLocation, useNavigate } from "react-router-dom";
 import AdminSidebar from "./AdminSidebar";
 import AdminHeader from "./AdminHeader";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -12,11 +12,18 @@ const AdminLayout = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(!isMobile);
   const { isAuthenticated, isLoading } = useAuth();
   const location = useLocation();
+  const navigate = useNavigate();
 
   // Close sidebar by default on mobile screens
   useEffect(() => {
     setIsSidebarOpen(!isMobile);
   }, [isMobile]);
+
+  // Check if we're on the dashboard path
+  useEffect(() => {
+    console.log("Current location:", location.pathname);
+    console.log("Authentication state:", isAuthenticated);
+  }, [location, isAuthenticated]);
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
@@ -39,8 +46,11 @@ const AdminLayout = () => {
 
   // If not authenticated, redirect to login
   if (!isAuthenticated) {
+    console.log("Not authenticated, redirecting to login...");
     return <Navigate to="/admin/login" state={{ from: location }} replace />;
   }
+
+  console.log("Rendering AdminLayout for authenticated user");
 
   return (
     <div className="min-h-screen bg-gray-50">

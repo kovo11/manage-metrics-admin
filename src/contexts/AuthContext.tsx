@@ -47,7 +47,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const checkAuthStatus = async () => {
       try {
         const adminData = await verifyAdmin();
-        console.log("Admin data:", adminData);
+        console.log("Admin verification data:", adminData);
         if (adminData && adminData.admin_id) {
           setAdmin(adminData as Admin);
           setIsAuthenticated(true);
@@ -68,9 +68,16 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     checkAuthStatus();
   }, []);
 
-  const login = (admin: Admin) => {
-    setAdmin(admin);
+  const login = (adminData: Admin) => {
+    console.log("Setting admin data:", adminData);
+    setAdmin(adminData);
     setIsAuthenticated(true);
+    
+    // Store token in localStorage for persistence
+    if (adminData.admin_id) {
+      localStorage.setItem("adminUser", JSON.stringify(adminData));
+    }
+    
     toast.success("Successfully logged in");
   };
 

@@ -31,11 +31,12 @@ const LoginForm = () => {
     setIsLoading(true);
     try {
       const response = await adminLogin({ email, password });
+      console.log("Login response:", response);
       
-      // If login is successful
+      // If login is successful (no error message)
       if (!response.message) {
         // Call the login function from AuthContext to update authentication state
-        await login(response);
+        login(response);
         
         toast({
           title: "Success",
@@ -43,8 +44,11 @@ const LoginForm = () => {
           variant: "default",
         });
         
-        // Navigate to admin dashboard - fix: corrected the navigation path
-        navigate("/admin/dashboard");
+        // Navigate to admin dashboard with a slight delay to ensure state is updated
+        setTimeout(() => {
+          navigate("/admin/dashboard");
+          console.log("Navigating to /admin/dashboard");
+        }, 100);
       } else {
         // Handle login errors
         toast({

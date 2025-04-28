@@ -1,6 +1,7 @@
-import { useEffect, useState } from "react";
+
+import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { adminLogin, verifyAdmin } from "@/services/authService";
+import { adminLogin } from "@/services/authService";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -31,6 +32,7 @@ const AdminLogin = () => {
     setIsLoading(true);
     try {
       const response = await adminLogin({ email, password });
+      console.log("Login response:", response);
       
       // If login is successful
       if (!response.message) {
@@ -39,8 +41,11 @@ const AdminLogin = () => {
         
         toast.success("Login successful");
         
-        // Redirect to admin dashboard
-        navigate("/admin/dashboard");
+        // Redirect to admin dashboard with a slight delay
+        setTimeout(() => {
+          navigate("/admin/dashboard");
+          console.log("Navigating to /admin/dashboard");
+        }, 100);
       } else {
         toast.error(response.message || "Login failed");
       }
