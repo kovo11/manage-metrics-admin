@@ -20,6 +20,7 @@ import {
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface SidebarLinkProps {
   href: string;
@@ -49,11 +50,12 @@ const SidebarLink = ({ href, icon: Icon, label }: SidebarLinkProps) => {
 
 interface AdminSidebarProps {
   isOpen: boolean;
+  onClose?: () => void;
 }
 
-const AdminSidebar = ({ isOpen }: AdminSidebarProps) => {
+const AdminSidebar = ({ isOpen, onClose }: AdminSidebarProps) => {
   const { logout } = useAuth();
-  const isMobileView = window.innerWidth < 1024;
+  const isMobile = useIsMobile();
 
   const handleLogout = async () => {
     await logout();
@@ -75,8 +77,8 @@ const AdminSidebar = ({ isOpen }: AdminSidebarProps) => {
             <LayoutDashboard className="h-5 w-5 text-primary" />
             <span>Admin Portal</span>
           </Link>
-          {isMobileView && (
-            <Button variant="ghost" size="icon" className="lg:hidden">
+          {isMobile && (
+            <Button variant="ghost" size="icon" className="lg:hidden" onClick={onClose}>
               <X className="h-4 w-4" />
             </Button>
           )}

@@ -22,6 +22,12 @@ const AdminLayout = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
+  const closeSidebar = () => {
+    if (isMobile) {
+      setIsSidebarOpen(false);
+    }
+  };
+
   // Show loading state
   if (isLoading) {
     return (
@@ -41,8 +47,8 @@ const AdminLayout = () => {
       <div className="flex h-screen overflow-hidden">
         {isMobile ? (
           <Sheet open={isSidebarOpen} onOpenChange={setIsSidebarOpen}>
-            <SheetContent side="left" className="p-0 w-64">
-              <AdminSidebar isOpen={true} />
+            <SheetContent side="left" className="p-0 w-64 sm:max-w-none">
+              <AdminSidebar isOpen={true} onClose={closeSidebar} />
             </SheetContent>
           </Sheet>
         ) : (

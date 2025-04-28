@@ -27,12 +27,16 @@ const LoginForm = () => {
       });
       return;
     }
+    
     setIsLoading(true);
     try {
       const response = await adminLogin({ email, password });
       
-      // If login is successful and no error message
+      // If login is successful
       if (!response.message) {
+        // Call the login function from AuthContext to update authentication state
+        await login(response);
+        
         toast({
           title: "Success",
           description: "Logged in successfully",
